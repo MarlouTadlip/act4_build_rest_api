@@ -5,7 +5,7 @@ import fs from 'fs'
 
 let users : Users = loadUsers()
 
-const loadUsers = () : Users =>{
+function loadUsers () : Users {
     try {
         const data = fs.readFileSync('./users.json', 'utf-8')
         return JSON.parse(data)
