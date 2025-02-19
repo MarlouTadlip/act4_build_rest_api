@@ -1,4 +1,4 @@
-import { User, UnitUser, Users} from './user.interface.ts'
+import { User, UnitUser, Users} from './user.interface'
 import bcrypt from 'bcryptjs'
 import {v4 as random} from 'uuid'
 import fs from 'fs'
@@ -105,3 +105,15 @@ export const update = async (id : string, updateValues : User) : Promise<UnitUse
     return users[id]
 }
 
+export const remove = async (id : string) : Promise <null | void> => {
+    
+    const user = await findOne(id)
+
+    if (!user) {
+        return null
+    }
+
+    delete users[id]
+
+    saveUsers()
+}
