@@ -1,19 +1,20 @@
-import express, {Request,Response,Router} from 'express'
+import express, { Router } from 'express'
+import { Request, Response } from 'express'
 import { UnitUser, User } from './user.interface'
 import { StatusCodes  } from 'http-status-codes'
 import * as database from './user.database'
 
-export const userRouter = Router();
+export const userRouter = express.Router();
 
 userRouter.get('/users', async (req : Request, res : Response) => {
     try {
         const allUsers : UnitUser[] = await database.findAll()
 
-        if (!allUsers) {
+        if (!allUsers) {    
             return res.status(500).json({msg : 'No users at this time..'})
         }
 
-        return res.status(500).json({total_user : allUsers.length, allUsers})
+        return res.status(StatusCodes.OK).json({total_user : allUsers.length, allUsers})
 
     } catch (err) {
         return res.status(500).json({err})
@@ -30,7 +31,7 @@ userRouter.get('/user/:id', async ( req : Request, res : Response) => {
 
          return res.status(StatusCodes.OK).json({user})
     } catch (err) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({error})
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({err})
     }
 })
 
@@ -105,9 +106,9 @@ userRouter.put('/user/:id', async (req : Request, res : Response) => {
     }
 })
 
-userRouter.delete('/user/:id', async (req : Request, res : Response) => {
+userRouter.delete('/user/:id', async (req: Request, res: Response) => {
     try {
-        const id = (req.params.id)
+        const id = (req.params.id) 
 
         const user = await database.findOne(id)
 
